@@ -1,0 +1,131 @@
+import { NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
+import { NgZone } from "@angular/core";
+import { isIOS } from "tns-core-modules/platform";
+import { RouterExtensions } from "nativescript-angular";
+import { NativeScriptFormsModule } from "nativescript-angular/forms";
+import { NativeScriptHttpModule } from "nativescript-angular/http";
+import { NativeScriptModule } from "nativescript-angular/nativescript.module";
+import { NativeScriptRouterModule } from "nativescript-angular/router";
+import { NgShadowModule } from 'nativescript-ng-shadow';
+import { Http } from "@angular/http";
+//import { AppShortcuts } from "nativescript-app-shortcuts";
+/* Navigation */
+import { SIDEDRAWER_DIRECTIVES } from "nativescript-pro-ui/sidedrawer/angular";
+import { LISTVIEW_DIRECTIVES } from 'nativescript-pro-ui/listview/angular';
+
+/* use fontawesome */
+import { TNSFontIconModule, TNSFontIconService } from 'nativescript-ngx-fonticon';
+
+import { AppComponent } from "./app.component";
+import { routes } from "./app.routing";
+
+
+/* components */ 
+import { LoginComponent } from "./pages/login/login.component";
+import { Meeting_detailComponent } from "./pages/meeting_detail/meeting_detail.component";
+import { TodoComponent } from "./pages/todo/todo.component";
+import { Todo_detailComponent } from "./pages/todo_detail/todo_detail.component";
+import { DashboardComponent } from "./pages/dashboard/dashboard.component";
+import { TicketComponent } from "./pages/ticket/ticket.component";
+import { Ticket_detailComponent } from "./pages/ticket_detail/ticket_detail.component";
+import { NavComponent } from "./pages/nav/nav.component";
+import { MeetingComponent } from "./pages/meeting/meeting.component";
+import { SettingsComponent } from "./pages/settings/settings.component";
+import { TutorialComponent } from "./pages/tutorial/tutorial.component";
+
+
+/*services*/
+import { UserService } from "./shared/user/user.service";
+import { MeetingService } from "./shared/meeting/meeting.service";
+import { TodoService } from "./shared/todo/todo.service";
+import { TicketService } from "./shared/ticket/ticket.service";
+
+/* forms components */
+import { DropDownModule } from "nativescript-drop-down/angular";
+import { registerElement } from "nativescript-angular/element-registry";
+registerElement("Fab", () => require("nativescript-floatingactionbutton").Fab);
+
+/* slides */
+import { SlidesModule } from 'nativescript-ngx-slides';
+
+@NgModule({
+  imports: [
+    NativeScriptModule,
+    NativeScriptFormsModule,
+    NativeScriptHttpModule,
+    NativeScriptRouterModule,
+    NgShadowModule, //ng-shadow plugin
+      DropDownModule,
+      SlidesModule,
+    NativeScriptRouterModule.forChild(routes),
+    NativeScriptRouterModule.forRoot(routes),
+   TNSFontIconModule.forRoot({
+			'fa': './fonts/font-awesome.css'
+		})
+  ],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    TodoComponent,
+    Todo_detailComponent,
+    TicketComponent,
+    Ticket_detailComponent,
+    Meeting_detailComponent,
+    MeetingComponent,
+    NavComponent,
+    DashboardComponent,
+    SettingsComponent,
+    TutorialComponent,
+    LISTVIEW_DIRECTIVES,
+    SIDEDRAWER_DIRECTIVES
+  ],
+  bootstrap: [AppComponent],
+  schemas: [NO_ERRORS_SCHEMA],
+  providers:[
+    UserService,
+    MeetingService,
+    TicketService,
+    TodoService
+  ]
+})
+export class AppModule {
+    constructor(private routerExtensions: RouterExtensions,
+              //private zone: NgZone,
+              private userService :UserService,
+              private meetingService :MeetingService,
+              private ticketService :TicketService,
+              private todoService :TodoService
+            ) {
+/*
+    new AppShortcuts().setQuickActionCallback(shortcutItem => {
+  console.log(`The app was launched by shortcut type '${shortcutItem.type}'`);
+
+      // this is where you handle any specific case for the shortcut, based on its type
+      if (shortcutItem.type === "dashboard") {
+        //this.deeplink("/page1");
+        console.log("dashboard");
+      } else if (shortcutItem.type === "task") {
+        //this.deeplink("/page2");
+        console.log("task");
+      } else if (shortcutItem.type === "meeting") {
+        //this.deeplink("/page2");
+        console.log("meeting");
+      } else if (shortcutItem.type === "ticket") {
+        //this.deeplink("/page2");
+        console.log("ticket");
+      } else if (shortcutItem.type === "setting") {
+        //this.deeplink("/page2");
+        console.log("seeting");
+      }
+    });
+  }
+
+  private deeplink(to: string): void {
+    this.zone.run(() => {
+      this.routerExtensions.navigate([to], {
+        animated: false
+      });
+    });
+    */
+  }
+}

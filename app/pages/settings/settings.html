@@ -1,0 +1,42 @@
+<ActionBar title="" (swipe)="onSwipe($event)">
+    <GridLayout rows="*,*,*" columns="*" class="padding-right-10">
+        <Label class="fa" *ngIf="nav.drawer.getIsOpen()" (tap)="nav.onCloseDrawerTap()" [text]="'fa-times' | fonticon"
+               ios:horizontalAlignment="left"
+               android:horizontalAlignment="left" row="0" col="0"></Label>
+        <Label class="fa" *ngIf="!nav.drawer.getIsOpen()" (tap)="nav.openDrawer()" [text]="'fa-bars' | fonticon"
+               ios:horizontalAlignment="left"
+               android:horizontalAlignment="left" row="0" col="0"></Label>
+        <StackLayout orientation="horizontal" horizontalAlignment="center" row="0" col="1">
+            <Image src="~/images/disconnect.png" *ngIf="offlinemode"></Image>
+            <Label text="Einstellungen" class="nav-h3 margin-right-5"></Label>
+        </StackLayout>
+    </GridLayout>
+</ActionBar>
+<ScrollView orientation="vertical" isEnabled="true" width="100%" height="100%">
+    <AbsoluteLayout>
+        <StackLayout class="page marginitem" width="100%">
+            <Label class="h3" text="DATEN"></Label>
+            <GridLayout class="listitem margin-topbot-5" columns="*,*" rows="*">
+                <Label class="longtext text" textWrap="true" text="Lokale Speicherung der Daten"></Label>
+                <Switch [(ngModel)]="offlineData" col="1" row="0" (checkedChange)="toggleOffline()"
+                        horizontalAlignment="right"></Switch>
+            </GridLayout>
+            <Label class="h3" text="ALLGEMEIN"></Label>
+            <GridLayout class="listitem margin-topbot-5" columns="*,*" rows="*">
+                <Label class="longtext text" textWrap="true" text="Tutorial"></Label>
+                <Switch [(ngModel)]="tutorial" col="1" row="0" (checkedChange)="toggleTutorial()"
+                        horizontalAlignment="right"></Switch>
+            </GridLayout>
+            <!--<Label class="h3" text="ALLGEMEIN"></Label>
+            <GridLayout class="listitem margin-topbot-5" columns="*,*" rows="*">
+                <Label  class="longtext text" textWrap="true" text="Über die App"></Label>
+            </GridLayout>
+            <GridLayout class="listitem margin-topbot-5" columns="*,*" rows="*">
+                <Label  class="longtext text" textWrap="true" text="Kontakt"></Label>
+            </GridLayout>
+            <GridLayout class="listitem margin-topbot-5" columns="*,*" rows="*">
+                <Label  class="longtext text" textWrap="true" text="Datenschutz / Lizenzen"></Label>
+            </GridLayout>-->
+        </StackLayout>
+    </AbsoluteLayout>
+</ScrollView>

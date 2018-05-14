@@ -1,0 +1,82 @@
+StackLayout {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #00a699;
+}
+
+Image {
+  height: 40%;
+}
+
+TextField {
+  margin-left: 4.6%;
+  margin-right: 4.6%;
+  border-color: transparent;
+  background-color: white;
+  margin-bottom: 4%;
+}
+.submit-button {
+  background-color: #97dbd5;
+  color: black;
+  margin-left: 3.8%;
+  margin-right: 3.8%;
+}
+
+#logo{
+  margin:5;
+  margin-top: 5%; /* 93 = 11% */
+  margin-bottom: 5%;
+}
+/*
+  Oben bis Logo: 93;
+  Links und rechts von Logo: 111;
+  Logo bis box: 82;
+  Box:
+    padding-up:24;
+    width: 337;
+    height: 251;
+    abstand seite: 19;
+            unten: 61;
+            top: 355;
+
+  inputs: height:49;
+  abstand rand: 16;
+  abstand dazwischen: 16;
+
+  FONT(hint): Monzerate Medium 14;
+  color-hint: #bdbdbd;
+  farbe button: #97dbd5;
+  farbe box: #08857a;
+  box-shadow: x=0;y=2;blurr=3;black; 50%;
+  box-shadow: 0 15px 20px rgba(0, 0, 0, 0.3);
+
+  pw-reset: 12;
+*/
+
+#outerbox{
+  width: 88%;
+  height: 300vh; /* 251 */
+}
+
+#box{
+  padding-top:20%;
+  background-color: #08857a;
+  width: 100%;
+  height: 100%;
+}
+
+#forgot{
+  margin-top: 4%;
+  color: white;
+}
+
+
+.cred{
+  margin-left: 4.6%;
+  margin-right: 4.6%;
+  border-color: rgb(161, 0, 0);
+  border-width: 2%;
+  border-radius: 0;
+}

@@ -1,0 +1,127 @@
+<ActionBar title="" (swipe)="onSwipe($event)">
+    <GridLayout rows="*,*,*" columns="*" class="padding-right-10">
+        <StackLayout orientation="horizontal" row="0" col="0" ios:horizontalAlignment="left"
+                     android:horizontalAlignment="left" *ngIf="!create">
+            <Label class="fa" *ngIf="nav.drawer.getIsOpen()" (tap)="nav.onCloseDrawerTap()"
+                   [text]="'fa-times' | fonticon" ios:horizontalAlignment="left"
+                   android:horizontalAlignment="left" row="0" col="0"></Label>
+            <Label class="fa" *ngIf="!nav.drawer.getIsOpen()" (tap)="nav.openDrawer()" [text]="'fa-bars' | fonticon"
+                   ios:horizontalAlignment="left"
+                   android:horizontalAlignment="left" row="0" col="0"></Label>
+        </StackLayout>
+        <StackLayout orientation="horizontal" row="0" col="0" ios:horizontalAlignment="left"
+                     android:horizontalAlignment="left" *ngIf="create">
+            <Label class="fa margin-right-10" (tap)="cancel()" [text]="'fa-times' | fonticon"></Label>
+        </StackLayout>
+        <StackLayout orientation="horizontal" horizontalAlignment="center" row="0" col="1">
+            <Image src="~/images/disconnect.png" *ngIf="offlinemode"></Image>
+            <Label text="Tickets" class="nav-h3 margin-right-5"></Label>
+            <Label class="fa" (tap)="ngOnInit()" [text]="'fa-repeat' | fonticon"></Label>
+        </StackLayout>
+        <Label class="fa" *ngIf="!create" (tap)="cr_ticket()" [text]="'fa-plus' | fonticon"
+               ios:horizontalAlignment="right"
+               android:horizontalAlignment="right" row="0" col="2"></Label>
+        <StackLayout orientation="horizontal" row="0" col="2" ios:horizontalAlignment="right"
+                     android:horizontalAlignment="right" *ngIf="create">
+            <Label class="fa" (tap)="createTicket()" [text]="'fa-floppy-o' | fonticon"></Label>
+        </StackLayout>
+
+    </GridLayout>
+</ActionBar>
+<GridLayout columns="*" rows="*,auto">
+    <ScrollView tkMainContent orientation="vertical" isEnabled="true" width="100%" col="0" row="0">
+        <StackLayout class="page" width="100%">
+            <StackLayout *ngIf="!create">
+                <GridLayout columns="*" rows="auto,auto,auto,auto" *ngIf="tickets.length > 0">
+                    <Label class="h1" text="TICKETS" col="0" row="2"></Label>
+                    <StackLayout class="marginitem" col="0" row="3">
+                        <StackLayout *ngFor="let item of tickets">
+                            <GridLayout class="marginitem" columns="auto,*"
+                                        rows="auto,auto,auto"
+                                        (tap)="expand(item.id)">
+                                <Label class="borderitem" [ngStyle]="{'border-color': item.color}" height="40" col="0"
+                                       rowSpan="2"></Label>
+                                <GridLayout col="1" class="listitem" rowSpan="2" columns="*,*" rows="*,*">
+                                    <StackLayout col="0" row="0" orientation="horizontal">
+                                        <Label [text]="item.name" class="longtext h4" textWrap="true"></Label>
+                                    </StackLayout>
+                                    <Label class="text ticket" [text]="'Priorität: ' + item.priority" col="0" row="1"></Label>
+                                    <Label class="fa ticket indicator-tickets right" [text]="'fa-angle-down' | fonticon"
+                                           col="1"
+                                           rowSpan="2" *ngIf="!ticketForDetail[item.id]"></Label>
+                                    <Label class="fa ticket indicator-tickets right" [text]="'fa-angle-up' | fonticon"
+                                           col="1"
+                                           rowSpan="2" *ngIf="ticketForDetail[item.id]"></Label>
+                                </GridLayout>
+                                <StackLayout col="1" row="3" *ngIf="ticketForDetail[item.id]"
+                                             class="details padding-topbot-10">
+                                    <StackLayout orientation="horizontal">
+                                        <Label class="h4" [text]="item.project"></Label>
+                                        <Label [ngStyle]="{'background-color': item.color}" class="margin-left-5 circle"></Label>
+                                    </StackLayout>
+                                    <TextView
+                                            [text]="item.description"
+                                            editable="false" textWrap="true" class="longtext" *ngIf="item.description"></TextView>
+                                    <TextView
+                                            text="keine Beschreibung vorhanden."
+                                            editable="false" textWrap="true" class="longtext" *ngIf="!item.description"></TextView>
+                                    <GridLayout rows="*" columns="auto" horizontalAlignment="right">
+                                        <StackLayout orientation="horizontal" horizontalAlignment="right" col="0"
+                                                     row="0">
+                                            <FAB icon="~/images/edit2.png" (tap)="goToDetail(item.id)"
+                                                 rippleColor="#f1f1f1"
+                                                 class="fab-button margin-left-10 margin-right-5 margin-bot-10"></FAB>
+                                            <FAB icon="~/images/done2.png" (tap)="finished(item)"
+                                                 rippleColor="#f1f1f1"
+                                                 class="fab-button margin-right-5 margin-bot-10"></FAB>
+                                            <FAB icon="~/images/delete2.png" (tap)="deleteTicket(item.id)"
+                                                 rippleColor="#f1f1f1"
+                                                 class="fab-button-red margin-right-15 margin-bot-10"></FAB>
+                                        </StackLayout>
+                                    </GridLayout>
+                                </StackLayout>
+                            </GridLayout>
+                        </StackLayout>
+                    </StackLayout>
+                </GridLayout>
+                <StackLayout horizontalAlignment="center" verticalAlignment="center" class="margin-topbot-10" *ngIf="tickets.length <= 0">
+                    <Label class="h4" text="keine Tickets vorhanden."></Label>
+                </StackLayout>
+            </StackLayout>
+            <StackLayout *ngIf="create" class="form-taskticket">
+                <!--<Label class="fa" [text]="'fa-angle-down' | fonticon" horizontalAlignment="center"></Label>-->
+                <Label class="h5" text="Titel"></Label>
+                <TextField class="textfield" [(ngModel)]="newTicket.name"></TextField>
+                <GridLayout columns="*,auto" rows="*,*">
+                    <Label class="h5" text="Projekt" col="0" row="0"></Label>
+                    <DropDown #phasedd
+                              style="padding: 5;font-size: 15;background-color: #EBEBEB;margin-right:5;margin-bottom:10;"
+                              [items]="projectList"
+                              (selectedIndexChanged)="getUsers($event)"
+                              (opened)="onopen()"
+                              (closed)="onclose()" col="0" row="1"></DropDown>
+                    <Label class="h5" text="Priorität" col="1" row="0"></Label>
+                    <TextField class="textfield" keyboardType="number" [(ngModel)]="newTicket.priority" col="1"
+                               row="1"></TextField>
+                </GridLayout>
+                <Label class="h5" text="Verantwortlicher"></Label>
+                <DropDown #phasedd
+                          style="padding: 5;font-size: 15;background-color: #EBEBEB;margin-bottom:15;"
+                          [items]="userSelection"
+                          (selectedIndexChanged)="selectUser($event)"
+                          (opened)="onopen()" A
+                          (closed)="onclose()"></DropDown>
+                <Label class="h5" text="Beschreibung"></Label>
+                <TextView style="margin-top: 15px" [(ngModel)]="newTicket.description" height="150"
+                          returnKeyType="send" class="input"></TextView>
+            </StackLayout>
+        </StackLayout>
+    </ScrollView>
+    <!--<StackLayout orientation="horizontal" horizontalAlignment="right" *ngIf="create" verticalAlignment="bottom"
+                 height="10%" col="0" row="1">
+        <FAB icon="~/images/abbrechen2.png" (tap)="cancel()" rippleColor="#f1f1f1"
+             class="fab-button margin-10"></FAB>
+        <FAB icon="~/images/save.png" rippleColor="#f1f1f1" (tap)="createTicket()"
+             class="fab-button margin-10"></FAB>
+    </StackLayout>-->
+</GridLayout>

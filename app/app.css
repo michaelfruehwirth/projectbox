@@ -1,0 +1,389 @@
+@import '~/nativescript-theme-core/css/core.light.css';
+@import url("~/custom.css");
+
+/* use font awesome for this class */
+.fa {
+    font-family: FontAwesome, fontawesome-webfont;
+    font-size: 30;
+}
+
+/* general view (background, parent container)*/
+
+Page, .page {
+    background-color: #EBEBEB;
+}
+
+.page {
+    padding-top: 10;
+    padding-left: 10;
+    padding-bottom: 20;
+}
+
+
+/* typography */
+
+.h1,
+.h2,
+.h3,
+.h4,
+.h5 {
+    font-family: "Montserrat-Medium";
+    color: #222222;
+    selected-background-color: #03A698;
+}
+
+.nav-h1,
+.nav-h2,
+.nav-h3,
+.nav-h4,
+.nav-h5 {
+    font-family: "Montserrat-Medium";
+    color: #fafafa;
+}
+
+.text,
+Label,
+.TextField, TextField, TextView, DropDown {
+    font-family: "Mukta-Light";
+}
+
+Label {
+    font-size: 15;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+h1 {
+    font-weight: 500;
+}
+
+.pb-color {
+    color: #03A698;
+}
+
+/* padding, margin classes */
+
+
+.padding-right-10 {
+    padding-right: 10;
+}
+
+.no-margin {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+}
+.no-margin-left {
+    margin-left: 0;
+}
+
+.no-margin-right {
+    margin-right: 0;
+}
+
+.margin-right-5 {
+    margin-right: 5;
+}
+
+.margin-right-10 {
+    margin-right: 10;
+}
+
+.margin-right-15 {
+    margin-right: 15;
+}
+
+.margin-left-5 {
+    margin-left: 5;
+}
+
+.margin-left-10 {
+    margin-left: 10;
+}
+
+.margin-bot-10 {
+    margin-bottom: 10;
+}
+
+.padding-10 {
+    padding: 10;
+}
+
+.margin-5 {
+    margin: 5;
+}
+
+.margin-10 {
+    margin: 10;
+}
+
+.margin-15 {
+    margin: 15;
+}
+
+.padding-topbot-15 {
+    padding-top: 15;
+    padding-bottom: 15;
+}
+
+.padding-topbot-10 {
+    padding-top: 10;
+    padding-bottom: 10;
+}
+
+.margin-topbot-5 {
+    margin-top: 5;
+    margin-bottom: 5;
+}
+
+.margin-topbot-10 {
+    margin-top: 10;
+    margin-bottom: 10;
+}
+
+.margin-bot-10 {
+    margin-bottom: 10;
+}
+
+.margin-bot-15 {
+    margin-bottom: 15;
+}
+
+/* position classes */
+
+.center {
+    text-align: center;
+}
+
+/* width classes */
+
+.full-width {
+    width: 100%;
+}
+
+/* Navigation */
+
+.sideStackLayout {
+    background-color: #03A698;
+    color: #FFFFFF;
+}
+
+.sideTitleStackLayout {
+    padding: 16;
+    font-weight: bold;
+    background-color: #03A698;
+}
+
+.sideLabel {
+    padding: 16;
+    color: #fff;
+}
+
+.full-name,
+.e-mail-nav {
+    text-align: center;
+}
+
+.full-name {
+    margin-top: 10;
+    font-weight: bold;
+    font-size: 20;
+}
+
+.e-mail-nav {
+    font-size: 12;
+}
+
+.nav-items {
+    padding: 20;
+}
+
+ActionBar {
+    color: #fff;
+    background-color: #03A698;
+    text-align: center;
+}
+
+.side-nav-items {
+    padding: 20;
+    color: #fff;
+}
+
+.nav-label {
+    color: #fff;
+}
+
+.action-label {
+    width: 20;
+    height: 20;
+}
+
+
+/* dashboard */
+
+
+.add-bar {
+    background-color: #CB1D00;
+    padding: 5 10;
+}
+
+.add-bar Image {
+    height: 15;
+    vertical-align: center;
+    margin-left: 10;
+    margin-right: 5;
+}
+
+.data {
+    margin-left: 10;
+    margin-top: 10;
+    margin-bottom: 10;
+}
+
+
+.task,
+#task-h1 {
+    vertical-align: middle;
+    background-color: #FAF9FA;
+}
+
+
+/* projects */
+
+.project {
+    background-color: rgba(255, 0, 0, 0.0);
+    margin-right: 10;
+}
+
+
+/* Meeting */
+
+.meeting-indicator {
+    vertical-align: center;
+    text-align: center;
+}
+
+.meeting-cont {
+    vertical-align: center;
+    text-align: right;
+    font-size: 50;
+}
+
+
+/* tickets and tasks */
+
+.borderitem {
+    border-width: 2 2 2 2;
+    border-radius: 3 0 0 3;
+    background-color: rgba(255, 0, 0, 0.0);
+}
+
+.listitem {
+    background-color: #FFF;
+    padding: 10;
+}
+
+.marginitem {
+    margin-bottom: 10;
+}
+
+.data {
+    margin-left: 10;
+    margin-top: 10;
+    margin-bottom: 10;
+}
+
+
+.right {
+    text-align: right;
+    margin-right: 20;
+    vertical-align: middle;
+}
+
+.details {
+    margin-top: 0;
+    background-color: #FFF;
+    color: #222222;
+    padding: 10;
+    width: 90%;
+    margin-right: 5%;
+}
+
+.longtext {
+    background-color: #FFF;
+}
+
+
+.field-seperator {
+    border-width: 1 1 1 1;
+    border-color: #9e9e9e;
+    background-color: #9e9e9e;
+}
+
+.circle {
+    background-color: #000;
+    height: 10;
+    width: 10;
+    border-radius: 50;
+}
+
+.time {
+    margin-right: 30;
+}
+
+.tt-actions {
+    margin-left: 10;
+}
+
+.bg-gray {
+    background-color: #EBEBEB;
+}
+
+
+/* general forms */
+TextField, TextView {
+    padding: 10;
+    font-size: 15;
+    background-color: #EBEBEB;
+    margin-bottom: 10;
+}
+
+.form-taskticket .h5 {
+    color: #222222;
+}
+
+.tabs {
+    margin-bottom: 10;
+}
+
+.fab-button {
+    height: 45;
+    width: 45;
+    background-color: #03A698;
+}
+
+.fab-button-red {
+    height: 45;
+    width: 45;
+    background-color: #ff1744;
+}
+
+.form-taskticket {
+    background-color: #ffffff;
+}
+
+/* animation */
+.fa-spin {
+    animation-name: fa-spin;
+    animation-duration: 4;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes fa-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}

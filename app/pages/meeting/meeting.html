@@ -1,0 +1,154 @@
+<ActionBar title="" (swipe)="onSwipe($event)">
+    <GridLayout rows="*,*,*" columns="*" class="padding-right-10">
+        <StackLayout orientation="horizontal" row="0" col="0" ios:horizontalAlignment="left"
+                     android:horizontalAlignment="left" *ngIf="!create">
+            <Label class="fa" *ngIf="nav.drawer.getIsOpen()" (tap)="nav.onCloseDrawerTap()" [text]="'fa-times' | fonticon" ios:horizontalAlignment="left"
+                   android:horizontalAlignment="left" row="0" col="0"></Label>
+            <Label class="fa" *ngIf="!nav.drawer.getIsOpen()" (tap)="nav.openDrawer()" [text]="'fa-bars' | fonticon" ios:horizontalAlignment="left"
+                   android:horizontalAlignment="left" row="0" col="0"></Label>
+        </StackLayout>
+        <StackLayout orientation="horizontal" row="0" col="0" ios:horizontalAlignment="left"
+                     android:horizontalAlignment="left" *ngIf="create">
+            <Label class="fa margin-right-10" (tap)="cancel()" [text]="'fa-times' | fonticon" ></Label>
+        </StackLayout>
+        <StackLayout orientation="horizontal" horizontalAlignment="center" row="0" col="1">
+            <Image src="~/images/disconnect.png" *ngIf="offlinemode"></Image>
+            <Label text="Meetings" class="nav-h3 margin-right-5"></Label>
+            <Label class="fa" (tap)="ngOnInit()" [text]="'fa-repeat' | fonticon"></Label>
+        </StackLayout>
+        <Label class="fa" *ngIf="!create" (tap)="cr_meeting()" [text]="'fa-plus' | fonticon" ios:horizontalAlignment="right"
+               android:horizontalAlignment="right" row="0" col="2"></Label>
+        <StackLayout orientation="horizontal" row="0" col="2" ios:horizontalAlignment="right"
+                     android:horizontalAlignment="right" *ngIf="create">
+            <Label class="fa" (tap)="createMeeting()" [text]="'fa-floppy-o' | fonticon" ></Label>
+        </StackLayout>
+
+    </GridLayout>
+</ActionBar>
+<ScrollView orientation="vertical" isEnabled="true" width="100%" height="100%">
+    <AbsoluteLayout>
+        <StackLayout width="100%">
+            <StackLayout *ngIf="!create && showanything">
+                <Calendar style="background-color:#ffffff;padding:5;font-size:15;font-weight:500;margin:0;margin-bottom:20;" [settings]="settings"
+                          [events]="events"
+                          [appearance]="appearance" (dateSelected)="dateSelected($event)"
+                          (monthChanged)="monthChanged($event)" (loaded)="calendarLoaded($event)"></Calendar>
+                <StackLayout>
+                    <StackLayout id="meetinglist">
+                        <GridLayout *ngFor="let item of displayedMeetings" class="marginitem" columns="auto, *"
+                                    rows="auto"
+                                    [nsRouterLink]="['/meeting_detail', item.id]" marginBottom="10">
+                            <Label class="borderitem" [ngStyle]="{'border-color' : item.project_color}" height="60" col="0"
+                                   row="0" horizontalAlignment="center"></Label>
+                            <GridLayout columns="80,auto,auto,*" rows="auto,auto,*" col="1" row="0"
+                                        class="padding-topbot-10"
+                                        shadow="10">
+                                <Label [text]="item.dateFormatted" col="0" row="0" rowSpan="3"
+                                       class="meeting-indicator h4"
+                                       margin="0 0 0 5"></Label>
+                                <Label col="1" rowSpan="3" class="hr-light" width="1" height="80%" margin="5"></Label>
+                                <Label [text]="item.name"  class="longtext h4" textWrap="true" col="2" margin="5 0 0 0"></Label>
+                                <Label [text]="item.duration + ' Minuten'" col="2" row="1" class="text"
+                                       margin="0"></Label>
+                                <Label [text]="item.location" col="2" row="2" class="text" margin="0 5 0 0"></Label>
+                                <!--<Label text="..." col="3" rowSpan="3" class="meeting-cont" margin="0 20 20 20"></Label>-->
+                            </GridLayout>
+                        </GridLayout>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+            <StackLayout *ngIf="create" class="form-taskticket">
+                <Label class="h5" text="Titel"></Label>
+                <TextField class="textfield" [(ngModel)]="newMeeting.name"></TextField>
+                <Label class="h5" text="Datum"></Label>
+                <TextField class="textfield" (tap)="selectDate()" [text]="date"></TextField>
+                <GridLayout columns="*,*" rows="*,*">
+                    <Label class="h5" text="Beginn" col="0" row="0"></Label>
+                    <TextField class="textfield margin-right-5" (tap)="selectTime()" [text]="time" col="0" row="1"></TextField>
+                    <Label class="h5" text="Dauer in Minuten" col="1" row="0"></Label>
+                    <TextField class="textfield" keyboardType="number" [(ngModel)]="newMeeting.duration" col="1"
+                               row="1"></TextField>
+                </GridLayout>
+                <Label class="h5" text="Ort"></Label>
+                <TextField class="textfield" [(ngModel)]="newMeeting.location"></TextField>
+                <Label class="h5" text="Projekt"></Label>
+                <!--<TextField class="textfield" [(ngModel)]="meeting.project"></TextField>-->
+                <DropDown #projectdd
+                          style="padding: 5;font-size: 15;background-color: #EBEBEB;margin-bottom:15;"
+                          [items]="projectList"
+                          (selectedIndexChanged)="selectProject($event)"></DropDown>
+                <Label class="field-seperator margin-topbot-10" height="1"></Label>
+                <GridLayout columns="*,*" rows="*,*">
+                    <Image [src]="meeting_tabs == 'teilnehmer' ? '~/images/members_t.png' : '~/images/members_g.png'"
+                           (tap)="state('teilnehmer')" row="0" col="0" width="40"
+                           height="20"
+                           stretch="aspectFit"></Image>
+                    <Image [src]="meeting_tabs == 'agenda' ? '~/images/agenda_t.png' : '~/images/agenda_g.png'"
+                           (tap)="state('agenda')" row="0" col="1" width="20"
+                           height="20" stretch="aspectFit"></Image>
+                    <!--<Image [src]="meeting_tabs == 'files' ? '~/images/files_g.png' : '~/images/files_t.png'"
+                           (tap)="state('files')" row="0" col="2" width="40"
+                           height="20"
+                           stretch="aspectFit"></Image>-->
+                    <Label class="h4" text="Teilnehmer" [style.color]="meeting_tabs == 'teilnehmer' ? '#03A698' : '#222222'"
+                           col="0" row="1" horizontalAlignment="center"
+                           (tap)="state('teilnehmer')"></Label>
+                    <Label class="h4" text="Agenda" [style.color]="meeting_tabs == 'agenda' ? '#03A698' : '#222222'"
+                           col="1" row="1" horizontalAlignment="center"
+                           (tap)="state('agenda')"></Label>
+                    <!--<Label class="h4" text="Files" [style.color]="meeting_tabs == 'files' ? '#03A698' : '#222222'"
+                           col="2" row="1" horizontalAlignment="center"
+                           (tap)="state('files')"></Label>-->
+                </GridLayout>
+                <Label class="field-seperator margin-topbot-10" height="1"></Label>
+                <StackLayout [ngSwitch]="meeting_tabs">
+                    <StackLayout *ngSwitchCase="'teilnehmer'">
+                            <StackLayout orientation="horizontal" horizontalAlignment="center" (tap)="addAttendee()">
+                                <FAB icon="~/images/hinzufuegen2.png" (tap)="addAttendee()" rippleColor="#f1f1f1" class="fab-button margin-15"></FAB>
+                                <Label verticalAlignment="center" class="h4" text="Teilnehmer hinzufügen"></Label>
+                            </StackLayout>
+                            <GridLayout columns="auto,*,auto,auto" rows="auto,auto" *ngFor="let attendee of newMeeting.attendees; let i = index" [attr.data-index]="i">
+                                <FAB (tap)="removeAttendee(i)" icon="~/images/delete.png" rowSpan="2"
+                                     col="0" rippleColor="#f1f1f1"
+                                     class="fab-button-red margin-10" verticalAlignment="center"></FAB>
+                                <TextField class="textfield  margin-right-5" hint="Name"[(ngModel)]="newMeeting.attendees[i].name" col="1" row="0"></TextField>
+                                <TextField class="textfield" hint="Kürzel" [(ngModel)]="newMeeting.attendees[i].abbreviation" col="2" row="0"></TextField>
+                                <TextField class="textfield" hint="E-Mail-Adresse" [(ngModel)]="newMeeting.attendees[i].email" col="1" colSpan="2" row="1"></TextField>
+                            </GridLayout>
+                    </StackLayout>
+                    <StackLayout *ngSwitchCase="'agenda'">
+                            <StackLayout orientation="horizontal" horizontalAlignment="center" (tap)="addPoint()">
+                                <FAB icon="~/images/hinzufuegen2.png" rippleColor="#f1f1f1" class="fab-button margin-15" (tap)="addPoint()"></FAB>
+                                <Label verticalAlignment="center" class="h4" text="Agendapunkt hinzufügen"></Label>
+                            </StackLayout>
+                            <GridLayout columns="auto,*,auto,auto" rows="auto,auto" *ngFor="let point of newMeeting.agenda; let i = index" [attr.data-index]="i">
+                                <FAB icon="~/images/delete.png" rowSpan="2" (tap)="removePoint(i)"
+                                     col="0" rippleColor="#f1f1f1"
+                                     class="fab-button-red margin-10" verticalAlignment="center"></FAB>
+                                <TextField class="textfield  margin-right-5" hint="Thema" [(ngModel)]="newMeeting.agenda[i].name" col="1" row="0"></TextField>
+                                <TextField class="textfield" hint="Dauer" keyboardType="number" [(ngModel)]="newMeeting.agenda[i].duration" col="2" row="0"></TextField>
+                                <TextField class="textfield" hint="Verantwortlicher" [(ngModel)]="newMeeting.agenda[i].responsible" col="1" colSpan="2" row="1"></TextField>
+                            </GridLayout>
+                    </StackLayout>
+                    <!--<StackLayout *ngSwitchCase="'files'">
+                        <StackLayout orientation="horizontal" horizontalAlignment="center" (tap)="sourcepic()">
+                            <FAB icon="~/images/photo-camera.png"  rippleColor="#f1f1f1"
+                                 class="fab-button margin-15" (tap)="sourcepic()"></FAB>
+                            <Label verticalAlignment="center" class="h4" text="Foto hochladen" (tap)="sourcepic()"></Label>
+                        </StackLayout>
+                        <GridLayout columns="auto,*" rows="*,*" *ngFor="let file of userFiles"
+                                    style="padding:5; margin-top: 10;">
+                            <Image (tap)="showImage(file.imagesrc)" src="~/images/picture_file.png" rowSpan="2" col="0"
+                                   width="40" height="40"></Image> <!-- [src]=filetype? picture : document -->
+                            <Label [text]="file.name" row="0" col="1" verticalAlignment="center"
+                                   style="padding:5;"></Label>
+                            <!--<Label [text]="imagefile.name"></Label>
+                            <Label [text]="file.size + ' Bytes'" row="1" col="1" verticalAlignment="center"
+                                   style="padding:5;"></Label>
+                        </GridLayout>
+                    </StackLayout>-->
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+    </AbsoluteLayout>
+</ScrollView>

@@ -1,0 +1,47 @@
+<ActionBar title="">
+    <GridLayout rows="*,*,*" columns="*" class="padding-right-10">
+        <Label class="fa" (tap)="cancel()" [text]="'fa-times' | fonticon" ios:horizontalAlignment="left"
+               android:horizontalAlignment="left" row="0" col="0"></Label>
+        <StackLayout orientation="horizontal" row="0" col="1" ios:horizontalAlignment="center"
+                     android:horizontalAlignment="center">
+            <Image src="~/images/disconnect.png" *ngIf="offlinemode"></Image>
+            <Label text="Tickets" class="nav-h3"></Label>
+        </StackLayout>
+        <Label class="fa" (tap)="saveTicket()" [text]="'fa-floppy-o' | fonticon" ios:horizontalAlignment="right"
+               android:horizontalAlignment="right" row="0" col="2"></Label>
+    </GridLayout>
+</ActionBar>
+<ScrollView tkMainContent orientation="vertical" isEnabled="true" width="100%">
+    <AbsoluteLayout>
+        <StackLayout class="page" width="100%">
+            <StackLayout class="form-taskticket">
+                <Label class="h5" text="Titel"></Label>
+                <TextField class="textfield" [(ngModel)]="ticket.name"></TextField>
+                <GridLayout columns="*,auto" rows="*,*">
+                    <Label class="h5" text="Projekt" col="0" row="0"></Label>
+                    <DropDown #phasedd
+                              style="padding: 5;font-size: 15;background-color: #EBEBEB;margin-right:5;margin-bottom:10;"
+                              [items]="projectList"
+                              [selectedIndex]="selectedProjectIndex"
+                              (selectedIndexChanged)="getUsers($event)"
+                              (opened)="onopen()"
+                              (closed)="onclose()" col="0" row="1"></DropDown>
+                    <Label class="h5" text="Priorität" col="1" row="0"></Label>
+                    <TextField class="textfield" keyboardType="number" [(ngModel)]="ticket.priority" col="1"
+                               row="1"></TextField>
+                </GridLayout>
+                <Label class="h5" text="Verantwortlicher"></Label>
+                <DropDown #phasedd
+                          style="padding: 5;font-size: 15;background-color: #EBEBEB;margin-bottom:15;"
+                          [items]="userSelection"
+                          [selectedIndex]="selectedUserIndex"
+                          (selectedIndexChanged)="selectUser($event)"
+                          (opened)="onopen()" A
+                          (closed)="onclose()"></DropDown>
+                <Label class="h5" text="Beschreibung"></Label>
+                <TextView style="margin-top: 15px" [(ngModel)]="ticket.description" height="150"
+                          returnKeyType="send" class="input"></TextView>
+            </StackLayout>
+        </StackLayout>
+    </AbsoluteLayout>
+</ScrollView>

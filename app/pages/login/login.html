@@ -1,0 +1,13 @@
+  <StackLayout>
+      <Image id="logo" src="res://logo_log" stretch="none" horizontalAlignment="center"></Image>
+      <GridLayout #box id="outerbox" shadow elevation="10">
+          <GridLayout id="box" horizontalAlignment="center" rows="*,*,*,*" columns="*">
+            <TextField #usrn (tap)="keyboardOn()" [class]="wrongcredentials ? 'cred' : ''" row="0" col="0" hint="BENUTZERNAME" keyboardType="email" [(ngModel)]="user.email"
+              autocorrect="false" autocapitalizationType="none"></TextField>
+            <TextField #pass (tap)="keyboardOn()" [class]="wrongcredentials ? 'cred' : ''" row="1" col="0" hint="PASSWORT" secure="true" [(ngModel)]="user.password"></TextField>
+          
+            <Button row="2" col="0" text="LOGIN" class="submit-button" (tap)="login()"></Button>
+            <Label row="3" col="0" id="forgot" text="Passwort vergessen?" horizontalAlignment="center" (tap)="forgotPW()"></Label>
+          </GridLayout>
+      </GridLayout>
+  </StackLayout>

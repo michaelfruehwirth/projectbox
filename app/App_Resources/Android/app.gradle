@@ -1,0 +1,21 @@
+// Add your native dependencies here:
+
+// Uncomment to add recyclerview-v7 dependency
+//dependencies {
+//	compile 'com.android.support:recyclerview-v7:+'
+//}
+
+android {
+  dexOptions {
+        jumboMode true
+    }
+  compileSdkVersion 26
+  buildToolsVersion '26.0.2'
+  defaultConfig {  
+    generatedDensities = []
+    applicationId = "eu.projectbox.app"  
+  }  
+  aaptOptions {  
+    additionalParameters "--no-version-vectors"  
+  }  
+} 

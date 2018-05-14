@@ -1,0 +1,145 @@
+<ActionBar title="">
+    <GridLayout rows="*,*,*" columns="*" class="padding-right-10">
+        <Label class="fa" (tap)="cancel()" [text]="'fa-times' | fonticon" ios:horizontalAlignment="left"
+               android:horizontalAlignment="left" row="0" col="0"></Label>
+        <StackLayout orientation="horizontal" row="0" col="1" ios:horizontalAlignment="center"
+                     android:horizontalAlignment="center">
+            <Image src="~/images/disconnect.png" *ngIf="offlinemode"></Image>
+            <Label text="Tasks" class="nav-h3"></Label>
+        </StackLayout>
+        <Label class="fa" (tap)="saveTodo()" [text]="'fa-floppy-o' | fonticon" ios:horizontalAlignment="right"
+               android:horizontalAlignment="right" row="0" col="2"></Label>
+    </GridLayout>
+</ActionBar>
+<ScrollView tkMainContent orientation="vertical" isEnabled="true" width="100%">
+    <AbsoluteLayout>
+        <StackLayout class="page" width="100%">
+            <StackLayout class="form-taskticket">
+                <!--<Label class="fa" [text]="'fa-angle-down' | fonticon" horizontalAlignment="center"></Label>-->
+                <Label class="h5" text="Titel"></Label>
+                <TextField class="textfield" [(ngModel)]="todo.name"></TextField>
+                <Label class="h5" text="Deadline"></Label>
+                <TextField class="textfield" (tap)="selectDate()" [text]="date"></TextField>
+                <Label class="h5" text="Projekt"></Label>
+                <!--<TextField class="textfield" [(ngModel)]="todo.project"></TextField>-->
+                <DropDown #dd
+                          style="padding: 5;font-size: 15;background-color: #EBEBEB;margin-bottom:15;"
+                          [items]="projectList"
+                          [selectedIndex]="selectedProjectIndex"
+                          (selectedIndexChanged)="getPhases($event)"
+                          (opened)="onopen()"
+                          (closed)="getPhases()"></DropDown>
+                <Label class="h5" text="Phase"></Label>
+                <DropDown #phasedd
+                          style="padding: 5;font-size: 15;background-color: #EBEBEB;margin-bottom:15;"
+                          [items]="phaseSelection"
+                          [selectedIndex]="selectedPhaseIndex"
+                          (selectedIndexChanged)="selectPhase($event)"
+                          (opened)="onopen()" A
+                          (closed)="onclose()"></DropDown>
+                <Label class="h5" text="Verantwortlicher"></Label>
+                <DropDown #userdd
+                          style="padding: 5;font-size: 15;background-color: #EBEBEB;margin-bottom:15;"
+                          [items]="userSelection"
+                          [selectedIndex]="selectedUserIndex"
+                          (selectedIndexChanged)="selectUser($event)"
+                          (opened)="onopen()" A
+                          (closed)="onclose()"></DropDown>
+                <!--<Label class="h5" text="Verantwortlicher"></Label>
+                <TextField class="textfield" [(ngModel)]="todo.user"></TextField>-->
+                <Label class="h5" text="Beschreibung"></Label>
+                <TextView [(ngModel)]="todo.description" height="150" returnKeyType="send"
+                          class="input textfield"></TextView>
+                <Label class="field-seperator margin-topbot-10" height="1"></Label>
+                <GridLayout columns="auto,auto,*" rows="*" class="margin-topbot-10">
+                    <Label verticalAlignment="center" text="Top-Task" class="h4" row="0" col="1"></Label>
+                    <Image src="~/images/toptask.png" width="20" height="20" stretch="aspectFit"
+                           class="margin-right-5" row="0" col="0"></Image>
+                    <Switch [(ngModel)]="todo.pinned" (checkedChange)="onFirstChecked($event)"
+                            horizontalAlignment="right"
+                            col="2" row="0"></Switch>
+                </GridLayout>
+                <Label class="field-seperator margin-topbot-10" height="1"></Label>
+                <GridLayout columns="*,*" rows="*,*">
+                    <Image [src]="task_tabs == 'timetracking' ? '~/images/timetracking_t.png' : '~/images/timetracking_g.png'"
+                           (tap)="state('timetracking')" row="0" col="0" width="20"
+                           height="20"
+                           stretch="aspectFit"></Image>
+                    <Image [src]="task_tabs == 'kommentare' ? '~/images/kommentare_t.png' : '~/images/kommentare_g.png'"
+                           (tap)="state('kommentare')" row="0" col="1" width="40"
+                           height="20"
+                           stretch="aspectFit"></Image>
+                    <Label class="h4" text="Timetracking"
+                           [style.color]="task_tabs == 'timetracking' ? '#03A698' : '#222222'"
+                           (tap)="state('timetracking')" col="0" row="1"
+                           horizontalAlignment="center"></Label>
+                    <Label class="h4" text="Kommentare"
+                           [style.color]="task_tabs == 'kommentare' ? '#03A698' : '#222222'" (tap)="state('kommentare')"
+                           col="1" row="1"
+                           horizontalAlignment="center"></Label>
+                </GridLayout>
+                <Label class="field-seperator margin-topbot-10" height="1"></Label>
+                <StackLayout [ngSwitch]="task_tabs">
+                    <StackLayout *ngSwitchCase="'timetracking'">
+                        <GridLayout columns="*,*" rows="*, *">
+                            <Label class="h4" col="0" row="0" text="Gesamtdauer"></Label>
+                            <Label class="h4 pb-color" col="1" row="0" [text]="totalTimeString"
+                                   horizontalAlignment="right"></Label>
+                            <StackLayout colSpan="2" row="1">
+                                <StackLayout *ngFor="let tracking of trackings">
+                                    <Label class="field-seperator" height="1"></Label>
+                                    <StackLayout orientation="horizontal" class="bg-gray">
+                                        <Label [text]="tracking.startDateString"
+                                               class="padding-left-5 h5"></Label>
+                                    </StackLayout>
+                                    <Label class="field-seperator" height="1"></Label>
+                                    <GridLayout columns="auto,*" row="*">
+                                        <StackLayout class="textfield padding-left-5" orientation="horizontal" row="0" col="0">
+                                            <Label [text]="tracking.startTimeString"></Label>
+                                            <Label text=" - "></Label>
+                                            <Label [text]="tracking.endTimeString"></Label>
+                                        </StackLayout>
+                                        <StackLayout orientation="horizontal" row="0" col="1"
+                                                     horizontalAlignment="right">
+                                            <Label [text]="tracking.timerString"
+                                                   [class]="isPL ? 'margin-right-10 pb-color bold' : '' "></Label>
+                                            <Label class="fa" [text]="'fa-times' | fonticon"
+                                                   (tap)="deleteTracking(tracking)" *ngIf="isPL"></Label>
+                                        </StackLayout>
+                                    </GridLayout>
+                                </StackLayout>
+                            </StackLayout>
+                        </GridLayout>
+                    </StackLayout>
+                    <StackLayout *ngSwitchCase="'kommentare'">
+                        <StackLayout>
+                            <!--<GridLayout rows="auto, auto" columns="auto, *">-->
+                            <GridLayout rows="auto, auto" columns="auto, auto, *" class="margin-topbot-10"
+                                        *ngFor="let comment of todo.comments">
+                                <Image [src]='comment.userImage' width="45" height="45"
+                                       stretch="aspectFit" verticalAlignment="center" rowSpan="2" col="0"
+                                       class="img-rounded"></Image>
+                                <Label [text]="comment.userFName + ' ' + comment.userLName + ': '" class="bold" col="1"
+                                       row="0" verticalAlignment="center"></Label>
+                                <Label [text]="comment.message" col="2" row="0" verticalAlignment="center"></Label>
+                                <Label [text]="comment.date" col="1" colSpan="2" row="1"
+                                       verticalAlignment="center"></Label>
+                            </GridLayout>
+                            <!--</GridLayout>-->
+                            <GridLayout rows="auto" columns="auto, *, auto" class="margin-topbot-10 padding-topbot-10">
+                                <Image [src]="userAvatar" width="45" height="45"
+                                       stretch="aspectFit" row="0" col="0" class="margin-right-5"></Image>
+                                <TextField #commentText class="textfield" hint="Kommentieren"
+                                           [(ngModel)]="newComment.message"
+                                           col="1" row="0" height="40"></TextField>
+                                <FAB icon="~/images/send.png" (tap)="createComment()" row="0"
+                                     col="2" rippleColor="#f1f1f1"
+                                     class="fab-button margin-10 margin-bot-15"></FAB>
+                            </GridLayout>
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+    </AbsoluteLayout>
+</ScrollView>
